@@ -1,0 +1,54 @@
+@import 'src/assets/styles/mixins/media.scss';
+
+.wrapper {
+    background: #fafafa;
+    min-height: 400px;
+    margin-bottom: 24px;
+    padding: 50px 70px;
+}
+
+.inputBlock {
+    width: 400px;
+    margin-bottom: 24px;
+}
+
+
+.inputNumber {
+    width: 100% !important;
+}
+
+.topBlock {
+    display: flex;
+    justify-content: space-between;
+}
+
+.firstFormItem {
+    display: flex;
+    justify-content: center;
+}
+
+.secondFormItem {
+    display: flex;
+    justify-content: space-between;
+}
+
+.generalFields {
+    margin-right: 50px;
+}
+
+.secondFields {
+    margin-top: 45px;
+}
+
+.quality {
+    display: flex;
+
+}
+
+.checkbox {
+    font-size: 18px;
+}
+.ant-checkbox {
+    width: 100px;
+    height: 100px;
+}
