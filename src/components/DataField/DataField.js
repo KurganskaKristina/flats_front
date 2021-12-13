@@ -22,6 +22,15 @@ const DataField = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [price, setPrice] = useState("")
 
+  const checkedBoxes = {
+    "kitchen studio": 0,
+    "multi-level": 0,
+    "with_attic": 0,
+    "penthouse": 0,
+    "without_furniture": 0,
+    "rough_plaster": 0,
+  }
+
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -55,6 +64,7 @@ const DataField = (props) => {
   }
 
   const onFinish = (values) => {
+    let checkBoxesValues = checkedValues ? checkedValues : checkedBoxes
     const resValues = {
       "house_price_index": 114.9,
       "quality": quality,
@@ -69,13 +79,14 @@ const DataField = (props) => {
       "wall_type": values["wall_type"],
       "heating": values["heating"],
       "year_of_construction": values["year_of_construction"],
-      ...checkedValues
+      ...checkBoxesValues
     }
     setFlatsVals(prepareData(resValues))
   }
 
   const addData = async (flatsVals) => {
     if(flatsVals){
+      console.log("flatsVals", flatsVals)
       setLoading(true)
       let result = await projectAPI.estimateFlatPrice(flatsVals)
       console.log("result", result)
