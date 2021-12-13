@@ -1,10 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
 import React from 'react'
 import 'antd/dist/antd.css';
 import {Layout} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
 import {Content, Footer, Header} from "antd/es/layout/layout";
+
 import DataField from "./components/DataField/DataField";
 
 
@@ -17,7 +17,6 @@ function App() {
           <DataField />
         </div>
       </Content>
-      <Footer/>
     </Layout>
   );
 }

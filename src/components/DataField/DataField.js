@@ -1,31 +1,32 @@
 import React, {useEffect, useState} from 'react'
 import {Input, Form, Tooltip, Button, Col, Row} from 'antd';
-import {Select, InputNumber, Slider, Checkbox, Modal} from 'antd';
-import {DeleteOutlined} from "@ant-design/icons";
+import {Select, InputNumber, Slider, Checkbox, Modal, Space, Spin} from 'antd';
+import {DeleteOutlined, LoadingOutlined} from "@ant-design/icons";
 
 import s from './style.module.scss'
 import {prepareData} from "../../utlis/prepareData";
 import {projectAPI} from "../../api/flats_api";
 
 
+function CaretRightOutlined() {
+  return null;
+}
+
 const DataField = (props) => {
   const {Option} = Select;
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false)
   const [flatsVals, setFlatsVals] = useState(null)
   const [checkedValues, setCheckedValues] = useState(null)
   const [quality, setQuality] = useState(1)
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [price, setPrice] = useState(0)
+  const [price, setPrice] = useState("")
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
   const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
     setIsModalVisible(false);
   };
 
@@ -74,11 +75,12 @@ const DataField = (props) => {
   }
 
   const addData = async (flatsVals) => {
-    console.log(flatsVals)
     if(flatsVals){
+      setLoading(true)
       let result = await projectAPI.estimateFlatPrice(flatsVals)
       console.log("result", result)
-      setPrice(result['class'])
+      setPrice(result['estimated_price_range'])
+      setLoading(false)
       showModal()
     }
   }
@@ -123,31 +125,31 @@ const DataField = (props) => {
                 </Form.Item>
                 <Form.Item
                   name="total_square_meters"
-                  rules={[{required: false}]}
+                  rules={[{required: true, message: 'Зазначте загальну площу'}]}
                 >
-                  <InputNumber placeholder="Загальна площа(м2)" size={"large"} className={s.inputNumber}/>
+                  <InputNumber placeholder="Загальна площа(м²)" size={"large"} className={s.inputNumber}/>
                 </Form.Item>
                 <Form.Item
                   name="live_square_meters"
-                  rules={[{required: false}]}
+                  rules={[{required: true, message: 'Зазначте житлову площу'}]}
                 >
-                  <InputNumber placeholder="Житлова площа(м2)" size={"large"} className={s.inputNumber}/>
+                  <InputNumber placeholder="Житлова площа(м²)" size={"large"} className={s.inputNumber}/>
                 </Form.Item>
                 <Form.Item
                   name="kitchen_square_meters"
-                  rules={[{required: false}]}
+                  rules={[{required: true, message: 'Зазначте площу кухні'}]}
                 >
-                  <InputNumber placeholder="Площа кухні(м2)" size={"large"} className={s.inputNumber}/>
+                  <InputNumber placeholder="Площа кухні(м²)" size={"large"} className={s.inputNumber}/>
                 </Form.Item>
                 <Form.Item
                   name="floor"
-                  rules={[{required: false}]}
+                  rules={[{required: true, message: 'Зазначте поверх'}]}
                 >
                   <InputNumber placeholder="Поверх" size={"large"} className={s.inputNumber}/>
                 </Form.Item>
                 <Form.Item
                   name="room_amount"
-                  rules={[{required: false}]}
+                  rules={[{required: true, message: 'Зазначте кількість кімнат'}]}
                 >
                   <InputNumber placeholder="Кількість кімнат" size={"large"} className={s.inputNumber}/>
                 </Form.Item>
@@ -282,8 +284,8 @@ const DataField = (props) => {
                 >
 
                   <div className={s.quality}>
-                    <h3>Quality: </h3>
-                    <Slider min={1} max={10} defaultValue={5} style={{width: 200, marginLeft: 20}}
+                    <h3>Загальна якість: </h3>
+                    <Slider min={1} max={10} defaultValue={10} style={{width: 200, marginLeft: 20}}
                             onChange={onChangeQuality}/>
                   </div>
                 </Form.Item>
@@ -316,18 +318,38 @@ const DataField = (props) => {
               </Row>
             </Checkbox.Group>
             <Form.Item>
-              <Tooltip title="Add item to the queue">
-                <Button size={"large"} type="primary" onClick={() => {
-                  form.submit()
-                }} disabled={props.loading}>
-                  Дізнатись вартість
+              <Tooltip title="Дізнатись орієнтовну вартість квартири">
+                <Button
+                  type="primary"
+                  size={"large"}
+                  onClick={() => {
+                    form.submit()
+                  }}
+                  disabled={loading}
+                >
+                  { loading ?
+                    <Space>
+                      <Spin indicator={<LoadingOutlined style={{fontSize: 18, color: "#00000040"}} spin/>}/>
+                      <span>Оцінювання...</span>
+                    </Space>
+                    :
+                    <Space><span>Дізнатись вартість</span></Space>}
                 </Button>
               </Tooltip>
             </Form.Item>
           </div>
         </Form>
-        <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-          <h2>Estimated price: </h2> <span style={{color: 'green', fontSize: 22}}>{price}</span>
+        <Modal title="" visible={isModalVisible}
+               onOk={handleOk}
+               footer={[
+                 <Button key="submit" type="primary" onClick={handleOk}>
+                   Добре
+                 </Button>,
+               ]}>
+          <div className={s.modalContent}>
+            <h2>Орієнтовна вартість квартири: </h2>
+            <div style={{color: 'green', fontSize: 22}}>{price}</div>
+          </div>
         </Modal>
       </div>
     </>

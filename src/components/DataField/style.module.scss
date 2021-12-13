@@ -2,7 +2,7 @@
 
 .wrapper {
     background: #fafafa;
-    min-height: 400px;
+    min-height: 500px;
     margin-bottom: 24px;
     padding: 50px 70px;
 }
@@ -45,10 +45,30 @@
 
 }
 
-.checkbox {
-    font-size: 18px;
+.modalContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+
 }
-.ant-checkbox {
-    width: 100px;
-    height: 100px;
-}
+
+
+//.ant-col .ant-col-6 .ant-checkbox-wrapper .ant-checkbox-inner span{
+//    width: 20px !important;
+//    height: 20px !important;
+//    font-size: 18px;
+//}
+//.ant-form label {
+//    font-size: 18px;
+//}
+//.ant-checkbox-inner {
+//    width: 20px !important;
+//    height: 20px !important;
+//}
+//.ant-checkbox-inner::after {
+//    left: 22.5%;
+//    width: 6.71428571px;
+//    height: 10.14285714px;
+//}
