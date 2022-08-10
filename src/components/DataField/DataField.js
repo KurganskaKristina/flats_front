@@ -38,6 +38,9 @@ const DataField = (props) => {
   const handleOk = () => {
     setIsModalVisible(false);
   };
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
 
   function onChange(checkedValues) {
@@ -352,6 +355,7 @@ const DataField = (props) => {
         </Form>
         <Modal title="" visible={isModalVisible}
                onOk={handleOk}
+               onCancel={handleCancel}
                footer={[
                  <Button key="submit" type="primary" onClick={handleOk}>
                    Добре
